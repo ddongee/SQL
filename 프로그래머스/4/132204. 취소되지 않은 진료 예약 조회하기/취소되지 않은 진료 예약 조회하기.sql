@@ -1,0 +1,18 @@
+-- 코드를 입력하세요
+
+
+SELECT sub.APNT_NO, a.PT_NAME, a.PT_NO, b.MCDP_CD, b.DR_NAME, sub.APNT_YMD
+# DATE_FORMAT(sub.APNT_YMD,'%Y-%m-%d %H:%i:%s') APNT_YMD
+FROM (
+        SELECT APNT_YMD, APNT_NO, PT_NO, MCDP_CD, MDDR_ID
+        FROM APPOINTMENT
+        WHERE APNT_CNCL_YMD IS NULL
+        AND YEAR(APNT_YMD) = '2022'
+        AND MONTH(APNT_YMD) = '04'
+        AND DAY(APNT_YMD) = '13'
+            # AND DATE_FORMAT(APNT_YMD, '%Y-%m-%d') = '2022-04-13'
+    ) sub
+    LEFT JOIN PATIENT a ON sub.PT_NO = a.PT_NO 
+    LEFT JOIN DOCTOR b ON sub.MDDR_ID = b.DR_ID
+WHERE b.MCDP_CD = 'CS'
+ORDER BY APNT_YMD
